@@ -12,6 +12,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: 'utopia'
+          path: $RUNNER_TEMP/utopia
+
+
       - name: Ascension
         run: |
           echo "----- dir -----"
@@ -28,11 +35,8 @@ jobs:
           # Copying all files/directories except .git to the ascension folder
           rsync -av --exclude='.git' ./ $RUNNER_TEMP/ascension
 
-          # Checking out the 'utopia' branch
-          git checkout utopia
-
           # Copying the .git folder of utopia to the ascension folder
-          cp -r .git $RUNNER_TEMP/ascension/
+          cp -r $RUNNER_TEMP/utopia/.git $RUNNER_TEMP/ascension/
 
           # Changing directory to the ascension folder
           cd $RUNNER_TEMP/ascension

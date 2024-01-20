@@ -15,34 +15,32 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v4
         with:
+          repository: 'mittons/CppDogDisplay'
           ref: 'utopia'
-          path: $RUNNER_TEMP/utopia
+          path: utopia
 
 
       - name: Ascension
         run: |
-          echo "----- dir -----"
-          dir 
           # Performing a hard reset to undo any changes
           git reset --hard
 
-          echo "----- dir -----"
-          dir
+          if [ -d "ascension" ]; then
+            echo "Folder exists. Failing the workflow."
+            exit 1
+          else
+            echo "Ascension folder does not exist. Continuing the workflow."
+            mkdir ascension
+          fi
 
-          # Creating a folder within the runner temp folder
-          mkdir $RUNNER_TEMP/ascension
-
-          # Copying all files/directories except .git to the ascension folder
-          rsync -av --exclude='.git' ./ $RUNNER_TEMP/ascension
-
-          cd $RUNNER_TEMP/utopia
-          la -alt
+          # Copying all files/directories except .git, ascension and utopia to the ascension folder
+          rsync -av --exclude='.git' --exclude='ascension' --exclude='utopia' ./ ascension
 
           # Copying the .git folder of utopia to the ascension folder
-          cp -r $RUNNER_TEMP/utopia/.git $RUNNER_TEMP/ascension/
-
+          cp -r ./utopia/.git ./ascension/
+          
           # Changing directory to the ascension folder
-          cd $RUNNER_TEMP/ascension
+          cd ascension
           
           echo "----- dir -----"
           dir

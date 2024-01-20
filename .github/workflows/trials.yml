@@ -1,0 +1,41 @@
+name: Trials
+
+on: 
+  push:
+    branches:
+      - progress
+
+jobs:
+  test-pwd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Ascension
+        run: |
+          echo "----- dir -----"
+          dir 
+          # Performing a hard reset to undo any changes
+          git reset --hard
+
+          echo "----- dir -----"
+          dir
+
+          # Creating a folder within the runner temp folder
+          mkdir $RUNNER_TEMP/ascension
+
+          # Copying all files/directories except .git to the ascension folder
+          rsync -av --exclude='.git' ./ $RUNNER_TEMP/ascension
+
+          # Checking out the 'utopia' branch
+          git checkout utopia
+
+          # Copying the .git folder of utopia to the ascension folder
+          cp -r .git $RUNNER_TEMP/ascension/
+
+          # Changing directory to the ascension folder
+          cd $RUNNER_TEMP/ascension
+          
+          echo "----- dir -----"
+          dir

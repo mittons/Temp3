@@ -40,4 +40,7 @@ jobs:
           cd ascension
           
           echo "----- dir -----"
-          la -al
+          ls -al
+
+          echo "----- git -----"
+          git status

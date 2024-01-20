@@ -12,18 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Checkout main branch
-        uses: actions/checkout@v4
-        with:
-          repository: 'mittons/CppDogDisplay'
-          ref: 'utopia'
-          path: utopia
-
-
       - name: Ascension
         run: |
           # Performing a hard reset to undo any changes
           git reset --hard
+
+          
+          repoStr=${{ github.repository }}
+          repoName=${repoStr#*/}
+          git clone --single-branch --branch utopia https://www.github.com/${{ github.actor }}/${repoName}.git utopia-temp
 
           if [ -d "ascension" ]; then
             echo "Folder exists. Failing the workflow."
@@ -37,7 +34,7 @@ jobs:
           rsync -av --exclude='.git' --exclude='ascension' --exclude='utopia' ./ ascension
 
           # Copying the .git folder of utopia to the ascension folder
-          cp -r ./utopia/.git ./ascension/
+          cp -r ./utopia-temp/.git ./ascension/
           
           # Changing directory to the ascension folder
           cd ascension

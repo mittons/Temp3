@@ -50,4 +50,12 @@ jobs:
 
           git add .
           git commit -m "Update utopia contents with progress"
-          git push origin main
+          git push origin utopia
+  
+          # Go back to progress
+          git checkout progress
+          # Merge and push from utopia
+          git merge utopia -X theirs
+          git add .
+          git push origin staging
+        

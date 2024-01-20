@@ -40,4 +40,4 @@ jobs:
           cd ascension
           
           echo "----- dir -----"
-          dir
+          la -al

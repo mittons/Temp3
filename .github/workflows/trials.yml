@@ -35,6 +35,9 @@ jobs:
           # Copying all files/directories except .git to the ascension folder
           rsync -av --exclude='.git' ./ $RUNNER_TEMP/ascension
 
+          cd $RUNNER_TEMP/utopia
+          la -alt
+
           # Copying the .git folder of utopia to the ascension folder
           cp -r $RUNNER_TEMP/utopia/.git $RUNNER_TEMP/ascension/
 
